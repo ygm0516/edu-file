@@ -1,0 +1,10 @@
+ApiEndpoint=http://edu-msa-zuul.yang.svc.cluster.local:28081
+ApiMasterKey=MSA-K-PaaS
+ApiKeySalt=K-PaaS
+
+#kubernetes datasource
+dbms.username=root
+dbms.password=password
+dbms.url=115.68.198.117
+dbms.port=30501
+dbms.name=msa_comment

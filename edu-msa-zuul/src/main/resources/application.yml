@@ -1,0 +1,68 @@
+zuul:
+  retryable: true
+  routes:
+#    user:
+#      path: /user/**
+#      url: https://edu-msa-user.k-paas.org/user
+#    board:
+#      path: /board/**
+#      url: https://edu-msa-board.k-paas.org/board
+#    comments:
+#      path: /comments/**
+#      url: https://edu-msa-comment.k-paas.org/comments
+    user:
+      path: /user/**
+      url: http://localhost:28084/user
+    board:
+      path: /board/**
+      url: http://localhost:28082/board
+    comments:
+      path: /comments/**
+      url: http://localhost:28083/comments
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 32000
+      circuitBreaker:
+        enabled: true
+        requestVolumeThreshold: 3
+        sleepWindowInMilliseconds: 5000
+        errorThresholdPercentage: 50
+      metrics:
+        rollingStats:
+          timeInMilliseconds: 10000
+
+user:
+  ribbon:
+    MaxAutoRetries: 3
+    MaxAutoRetriesNextServer: 1
+    OkToRetryOnAllOperations: true
+    ConnectTimeout: 3000
+    ReadTimeout: 5000
+board:
+  ribbon:
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 1
+    OkToRetryOnAllOperations: true
+    ConnectTimeout: 3000
+    ReadTimeout: 5000
+comments:
+  ribbon:
+    MaxAutoRetries: 1
+    MaxAutoRetriesNextServer: 1
+    OkToRetryOnAllOperations: true
+    ConnectTimeout: 3000
+    ReadTimeout: 5000
+
+server:
+  tomcat:
+    remote-ip-header: x-forwarded-for
+    protocol-header: x-forwarded-proto
+    internal-proxies:     
+
+ApiMasterKey: 'MSA-K-PaaS'
+ApiKeySalt: 'K-PaaS'

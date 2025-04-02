@@ -1,0 +1,10 @@
+ApiEndpoint=http://edu-msa-zuul.${NAMESPACE}.svc.cluster.local:28081
+ApiMasterKey=MSA-K-PaaS
+ApiKeySalt=K-PaaS
+
+#kubernetes datasource
+dbms.username=root
+dbms.password=password
+dbms.url=${KUBERNETES_URL}
+dbms.port=${MYSQL_MSA_BOARD}
+dbms.name=msa_board

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kpaas.msa.service.impl.UserMapper">
+
+	<select id="getUserCount" parameterType="hashMap" resultType="hashMap">
+		SELECT
+				COUNT(*) AS COUNT
+		FROM TB_USER
+		<where>
+			<if test="searchType != null and searchType.equals('userId')">
+				<if test="searchValue != null and !searchValue.equals('')">
+					user_id = #{searchValue}
+				</if>
+			</if>
+			<if test="searchType != null and searchType.equals('userName')">
+				<if test="searchValue != null and !searchValue.equals('')">
+					user_name = #{searchValue}
+				</if>
+			</if>
+		</where>
+	</select>
+
+	<select id="getUserList" parameterType="hashMap" resultType="hashMap">
+		SELECT * FROM (
+			SELECT
+					(@ROWNUM := @ROWNUM + 1) AS RNUM,
+					user_seq		AS userSeq
+					, user_id		AS userId 
+					, user_name		AS userName
+					, DATE_FORMAT(create_dt,'%Y-%m-%d %H:%i:%s')		AS createDt
+					, DATE_FORMAT(update_dt,'%Y-%m-%d %H:%i:%s')		AS updateDt
+			FROM TB_USER, (SELECT @ROWNUM := 0) AS R
+			<where>
+				<if test="searchType != null and searchType.equals('userId')">
+					<if test="searchValue != null and !searchValue.equals('')">
+						user_id = #{searchValue}
+					</if>
+				</if>
+				<if test="searchType != null and searchType.equals('userName')">
+					<if test="searchValue != null and !searchValue.equals('')">
+						user_name = #{searchValue}
+					</if>
+				</if>
+			</where>
+			) AS RESULT
+		WHERE RNUM BETWEEN (#{page} -1) * #{pagePerCount} + 1 AND #{page} * #{pagePerCount}
+	</select>
+
+	<select id="getUser" parameterType="hashMap" resultType="hashMap">
+		SELECT
+				user_seq	AS userSeq
+				, user_id	AS userId
+				, user_name	AS userName
+				, DATE_FORMAT(create_dt,'%Y-%m-%d %H:%i:%s')		AS createDt
+				, DATE_FORMAT(update_dt,'%Y-%m-%d %H:%i:%s')		AS updateDt
+		FROM TB_USER
+		WHERE
+			user_id = #{userId}
+	</select>
+	
+	<select id="checkLogin" parameterType="hashMap" resultType="hashMap">
+		SELECT	user_id 	AS userId
+			  , user_name 	AS userName
+		FROM TB_USER
+		WHERE
+			user_id = #{userId}
+		AND
+			user_passwd = password(#{userPasswd})
+	</select>
+
+	<insert id="postUser" parameterType="hashMap" useGeneratedKeys="true" keyProperty="userSeq">
+		INSERT INTO TB_USER
+		(
+			user_id
+			, user_passwd
+			, user_name
+			, create_dt
+			, update_dt
+		) VALUES (
+			#{userId}
+			, password(#{userPasswd})
+			, #{userName}
+			, now()
+			, now()
+		)
+	</insert>
+
+	<update id="putUser" parameterType="hashMap">
+		UPDATE TB_USER
+		<set>
+			<if test="userPasswd != null and !userPasswd.equals('')">
+				user_passwd = password(#{userPasswd}),
+			</if>
+			<if test="userName != null and !userName.equals('')">
+				user_name = #{userName},
+			</if>
+			update_dt = now()
+		</set>
+		WHERE user_id = #{userId}
+	</update>
+
+	<delete id="deleteUser" parameterType="hashMap">
+		DELETE FROM TB_USER
+		WHERE user_id = #{userId}
+	</delete>
+
+</mapper>

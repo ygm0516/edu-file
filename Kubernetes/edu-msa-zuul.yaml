@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edu-msa-zuul
+  namespace: yang
+  labels:
+    app: zuul-msa  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zuul-msa
+  template:
+    metadata:
+      labels:
+        app: zuul-msa
+    spec:
+      containers:
+      - name: zuul-msa
+        image: docker.io/q1648587/edu-msa-zuul:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 28081      
+        env:             
+        - name: BOARD_MSA_URL
+          value: "edu-msa-board.yang.svc.cluster.local:28082"
+        - name: COMMENT_MSA_URL
+          value: "edu-msa-comment.yang.svc.cluster.local:28083"
+        - name: USER_MSA_URL
+          value: "edu-msa-user.yang.svc.cluster.local:28084"                
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edu-msa-zuul
+  namespace: yang
+  labels:
+    app: zuul-msa  
+spec:
+  ports:
+  - nodePort: 30101
+    port: 28081
+    protocol: TCP
+    targetPort: 28081
+  selector:
+    app: zuul-msa
+  type: NodePort
+

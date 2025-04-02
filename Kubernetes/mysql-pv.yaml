@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv-volume-yang # pv 이름
+  labels:
+    type: local
+spec:
+  storageClassName: cp-storageclass # 사용할 storageclass명
+  capacity:
+    storage: 10Gi # 스토리지 용량 크기
+  accessModes:
+    - ReadWriteOnce # 하나의 Pod에서만 access가 가능하도록 설정, ReadWriteMany는 여러 개 노드에서 접근 가능
+  hostPath:
+    path: "/home/share/nfs" # node에 저장될 스토리지 공간 
+

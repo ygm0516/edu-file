@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb-config
+  namespace: yang
+data:
+  master.cnf: |
+    [mysqld]
+    log-bin
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_general_ci
+    default-time-zone=Asia/Seoul
+  slave.cnf: |
+    [mysqld]
+    super-read-only
+    character-set-server=utf8mb4
+    collation-server=utf8mb4_general_ci
+    default-time-zone=Asia/Seoul
+  init.sql: |
+    grant all privileges on *.* to username@localhost identified by 'password';
+    grant all privileges on *.* to username@'127.0.0.1' identified by 'password';
+    CREATE DATABASE msa_board default CHARACTER SET UTF8;
+    USE msa_board;
+    CREATE TABLE `TB_BOARD` (
+    `board_seq` int(11) NOT NULL AUTO_INCREMENT,
+    `board_title` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+    `board_text` mediumtext COLLATE utf8_unicode_ci,
+    `write_user_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `write_user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `use_yn` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
+    `create_dt` datetime NOT NULL,
+    `update_dt` datetime NOT NULL,
+    PRIMARY KEY (`board_seq`)) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    CREATE DATABASE msa_comment default CHARACTER SET UTF8;
+    USE msa_comment;
+    CREATE TABLE `TB_COMMENT` (
+    `comment_seq` int(11) NOT NULL AUTO_INCREMENT,
+    `board_seq` int(11) NOT NULL,
+    `comment` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+    `write_user_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `write_user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `use_yn` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
+    `create_dt` datetime NOT NULL,
+    `update_dt` datetime NOT NULL,
+    PRIMARY KEY (`comment_seq`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+    CREATE DATABASE msa_user default CHARACTER SET UTF8;
+    USE msa_user;
+    CREATE TABLE `TB_USER` (
+    `user_seq` int(11) NOT NULL AUTO_INCREMENT,
+    `user_id` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `user_passwd` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+    `user_name` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
+    `use_yn` varchar(1) COLLATE utf8_unicode_ci DEFAULT 'Y',
+    `create_dt` datetime NOT NULL,
+    `update_dt` datetime NOT NULL,
+    PRIMARY KEY (`user_seq`),
+    UNIQUE KEY `id_key` (`user_id`)
+    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+

@@ -1,0 +1,8 @@
+ApiEndpoint=http://edu-msa-zuul.${NAMESPACE}.svc.cluster.local:28081
+ApiMasterKey=MSA-K-PaaS
+ApiKeySalt=K-PaaS
+
+#kubernetes Redis Setting
+redis.hostname=${KUBERNETES_URL}
+redis.port=${REDIS_MSA_UI}
+redis.password=password

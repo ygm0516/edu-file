@@ -1,0 +1,4 @@
+GitRepositoriesView.GitDirectories=C\:\\Users\\Administrator\\Desktop\\\uC591\uACBD\uBBFC\\subtask\\\uC804\uBB38\uAC00\uAD50\uC721 custom\\edu-msa-ui\\.git;C\:\\Users\\Administrator\\Desktop\\\uC591\uACBD\uBBFC\\subtask\\\uC804\uBB38\uAC00\uAD50\uC721 custom\\edu-msa-zuul\\.git;C\:\\Users\\Administrator\\Desktop\\\uC591\uACBD\uBBFC\\subtask\\\uC804\uBB38\uAC00\uAD50\uC721 custom\\edu-msa-board\\.git;C\:\\Users\\Administrator\\Desktop\\\uC591\uACBD\uBBFC\\subtask\\\uC804\uBB38\uAC00\uAD50\uC721 custom\\edu-msa-user\\.git;C\:\\Users\\Administrator\\Desktop\\\uC591\uACBD\uBBFC\\subtask\\\uC804\uBB38\uAC00\uAD50\uC721 custom\\edu-msa-comment\\.git;
+GitRepositoriesView.GitDirectories.relative=edu-msa-ui\\.git;edu-msa-zuul\\.git;edu-msa-board\\.git;edu-msa-user\\.git;edu-msa-comment\\.git;
+core_autoIgnoreDerivedResources=false
+eclipse.preferences.version=1
